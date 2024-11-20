@@ -1,0 +1,27 @@
+name: Automatic Testing for BookTrack Search Function
+
+on:
+  push:
+    branches:
+      - main  # Workflow will be triggered whenever there is a push in main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from GitHub Repo
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js in Ubuntu
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - name: Remove existing node_modules folder from cloned project
+        run: rm -rf /home/runner/work/resource-mgmt/resource-mgmt/node_modules/*
+      
+      - name: Install dependencies based on package.json
+        run: npm install
+      
+      - name: Run tests in "tests" folder
+        run: npm run backend-test
