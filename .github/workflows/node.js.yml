@@ -18,7 +18,7 @@ jobs:
           node-version: 18
       
       - name: Remove existing node_modules folder from cloned project
-        run: rm -rf /home/runner/work/resource-mgmt/resource-mgmt/node_modules/*
+        run: rm -rf /home/runner/work/booktrack_devops_project/booktrack_devops_project/node_modules/*
       
       - name: Install dependencies based on package.json
         run: npm install
