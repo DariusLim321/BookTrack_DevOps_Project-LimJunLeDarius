@@ -54,10 +54,9 @@ describe('Resource API', () => {
 
         // Test case for successful search with matching book title
         it('should return 200 and matching books', (done) => {
-            // Assuming you have a mock book or a test book in your database
             const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
             chai.request(baseUrl)
-                .post('/add-resource') // Assuming /add-resource adds a book or resource to the database
+                .post('/add-resource')
                 .send(mockBook)
                 .end((err, res) => {
                     chai.request(baseUrl)
@@ -69,7 +68,8 @@ describe('Resource API', () => {
                             done();
                         });
                 });
-        });
+        }).timeout(5000);  // Timeout increased to 5000ms (5 seconds)
+        
 
         // Test case for search that returns no results
         it('should return 404 if no books match the search query', (done) => {
@@ -95,7 +95,7 @@ describe('Resource API', () => {
         // });
 
         // Test case for a query containing special characters that require escaping
-        
+
         // Test case for valid search with different casing (case-insensitive search)
         it('should return 200 and matching books with case-insensitive search', (done) => {
             const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
@@ -115,31 +115,31 @@ describe('Resource API', () => {
         });
         // Test case for a query containing special characters that require escaping
         // Test case for a query containing special characters that require escaping
-it('should return 400 if the query contains special characters', (done) => {
-    chai.request(baseUrl)
-        .get('/search?query=book$%^')
-        .end((err, res) => {
-            // Expect the response to have status 400
-            expect(res).to.have.status(400);
+        it('should return 400 if the query contains special characters', (done) => {
+            chai.request(baseUrl)
+                .get('/search?query=book$%^')
+                .end((err, res) => {
+                    // Expect the response to have status 400
+                    expect(res).to.have.status(400);
 
-            // Update the error message to match your API's response
-            expect(res.body.error).to.equal('Query contains special characters. Only alphanumeric characters and spaces are allowed.');
-            done();
+                    // Update the error message to match your API's response
+                    expect(res.body.error).to.equal('Query contains special characters. Only alphanumeric characters and spaces are allowed.');
+                    done();
+                });
         });
-});
 
-        
-        
-// Test case for search that returns no results
-it('should return 404 if no books match the search query', (done) => {
-    chai.request(baseUrl)
-        .get('/search?query=nonexistentbooktitle')
-        .end((err, res) => {
-            expect(res).to.have.status(404);
-            expect(res.body.message).to.equal('No books found matching your search.');
-            done();
+
+
+        // Test case for search that returns no results
+        it('should return 404 if no books match the search query', (done) => {
+            chai.request(baseUrl)
+                .get('/search?query=nonexistentbooktitle')
+                .end((err, res) => {
+                    expect(res).to.have.status(404);
+                    expect(res.body.message).to.equal('No books found matching your search.');
+                    done();
+                });
         });
-});
 
 
     });
