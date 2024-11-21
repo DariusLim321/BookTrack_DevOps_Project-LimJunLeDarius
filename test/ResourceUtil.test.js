@@ -19,12 +19,17 @@ describe('Resource API', function() {
 
     after(async () => {
         // Ensure the server closes only after all tests are completed
-        await new Promise((resolve) => {
-            server.close(() => {
-                resolve();
+        await new Promise((resolve, reject) => {
+            server.close((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
             });
         });
     });
+    
 
     describe('GET /search', function() {
         this.timeout(5000); // Optional: Increase timeout for the search tests individually
