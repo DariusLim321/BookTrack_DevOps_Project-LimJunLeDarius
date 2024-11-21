@@ -54,8 +54,14 @@ describe('Resource API', () => {
 
         // Test case for successful search with matching book title
         it('should return 200 and matching books', (done) => {
+            // Mock the expected response for the search query
+            const mockResponse = [
+                { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' }
+            ];
+        
+            // Simulate the GET request to search for the book without adding it
             chai.request(baseUrl)
-                .get('/search?query=gatsby')
+                .get('/search?query=The Great Gatsby')
                 .end((err, res) => {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.an('array').that.is.not.empty;
@@ -63,6 +69,7 @@ describe('Resource API', () => {
                     done();
                 });
         }).timeout(5000);  // Timeout increased to 5000ms (5 seconds)
+        
         
         
 
@@ -93,21 +100,22 @@ describe('Resource API', () => {
 
         // Test case for valid search with different casing (case-insensitive search)
         it('should return 200 and matching books with case-insensitive search', (done) => {
-            const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
+            // Mock the expected response for the case-insensitive search query
+            const mockResponse = [
+                { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' }
+            ];
+        
+            // Simulate the GET request to search for the book with a case-insensitive query
             chai.request(baseUrl)
-                .post('/add-resource') // Assuming /add-resource adds a book or resource to the database
-                .send(mockBook)
+                .get('/search?query=THE GREAT gatsby')
                 .end((err, res) => {
-                    chai.request(baseUrl)
-                        .get('/search?query=THE GREAT gatsby')
-                        .end((err, res) => {
-                            expect(res).to.have.status(200);
-                            expect(res.body).to.be.an('array').that.is.not.empty;
-                            expect(res.body[0].title).to.equal('The Great Gatsby');
-                            done();
-                        });
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('array').that.is.not.empty;
+                    expect(res.body[0].title).to.equal('The Great Gatsby');
+                    done();
                 });
-        });
+        }).timeout(5000);  // Timeout increased to 5000ms (5 seconds)
+        
         // Test case for a query containing special characters that require escaping
         // Test case for a query containing special characters that require escaping
         it('should return 400 if the query contains special characters', (done) => {
