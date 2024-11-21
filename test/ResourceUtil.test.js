@@ -54,21 +54,16 @@ describe('Resource API', () => {
 
         // Test case for successful search with matching book title
         it('should return 200 and matching books', (done) => {
-            const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
             chai.request(baseUrl)
-                .post('/add-resource')
-                .send(mockBook)
+                .get('/search?query=gatsby')
                 .end((err, res) => {
-                    chai.request(baseUrl)
-                        .get('/search?query=gatsby')
-                        .end((err, res) => {
-                            expect(res).to.have.status(200);
-                            expect(res.body).to.be.an('array').that.is.not.empty;
-                            expect(res.body[0].title).to.equal('The Great Gatsby');
-                            done();
-                        });
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.an('array').that.is.not.empty;
+                    expect(res.body[0].title).to.equal('The Great Gatsby');
+                    done();
                 });
         }).timeout(5000);  // Timeout increased to 5000ms (5 seconds)
+        
         
 
         // Test case for search that returns no results
