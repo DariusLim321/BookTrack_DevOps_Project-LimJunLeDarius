@@ -35,9 +35,16 @@ async function searchBooks(req, res) {
         // Return the filtered results
         res.status(200).json(filteredBooks); // Send 200 OK status with the results
     } catch (error) {
-        console.error('Error fetching books:', error);
-        res.status(500).json({ message: 'An error occurred while searching for books.', error: error.message });
+        // Log the error for internal debugging
+        console.error('Error fetching books for query:', query, '\nError details:', error);
+    
+        // Send the correct error message to match the test case expectation
+        res.status(500).json({
+            error: 'Internal Server Error' // Change this to match the test expectation
+            // Optionally include the error message in logs or internal response
+        });
     }
+    
 }
 
 // Function to escape regex special characters
