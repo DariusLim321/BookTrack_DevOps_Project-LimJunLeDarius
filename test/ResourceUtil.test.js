@@ -6,7 +6,6 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const sinon = require('sinon');
 const mongoose = require('mongoose');                     // Import mongoose for MongoDB interaction
-const Book = require('../models/book.js');  // Adjust the path to your Book model
 
 let baseUrl;
 let sandbox;
@@ -19,24 +18,10 @@ describe('Resource API', () => {
                 useUnifiedTopology: true,
             });
             console.log('Connected to MongoDB');
-
         } catch (err) {
             console.error('Error connecting to MongoDB:', err);
             throw err;
         }
-        await Book.deleteMany({});
-
-        // Insert a test book into the database
-        const mockBook = new Book({
-            title: 'The Great Gatsby',
-            author: 'F. Scott Fitzgerald',
-            isbn: '1234567890',
-            genre: 'Fiction',
-            availableCopies: 10,
-            image: 'base64encodedimage',
-        });
-
-        await mockBook.save();  // Save the test book to the database
 
         // Start the server
         const { address, port } = await server.address();
@@ -51,7 +36,7 @@ describe('Resource API', () => {
 
         // Drop and close MongoDB connection
         if (mongoose.connection.readyState) {
-            await mongoose.connection.db.dropDatabase();
+            // await mongoose.connection.db.dropDatabase();
             // console.log('Test database dropped.');
             await mongoose.connection.close();
         }
