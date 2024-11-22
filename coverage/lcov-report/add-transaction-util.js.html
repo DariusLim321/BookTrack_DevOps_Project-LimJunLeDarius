@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for add-book-util.js</title>
+    <title>Code coverage report for add-transaction-util.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> add-book-util.js</h1>
+        <h1><a href="index.html">All files</a> add-transaction-util.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.52% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/21</span>
+                <span class='fraction'>3/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/20</span>
+                <span class='fraction'>3/21</span>
             </div>
         
             
@@ -115,30 +115,13 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -152,9 +135,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,66 +163,62 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Import the Book model to interact with the database
-const Book = require('../models/book.js');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Book = require('../models/book.js');
+const BorrowTransaction = require('../models/borrow-transaction.js');
 &nbsp;
-// Define an asynchronous function to handle adding a new book
-async function <span class="fstat-no" title="function not covered" >addBook(</span>req, res) {
+async function <span class="fstat-no" title="function not covered" >addTransaction(</span>req, res) {
+    const { book_id, borrower_name, borrowDate, returnDate } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-        // Destructure the required book details from the request body
-        const { title, author, isbn, genre, availableCopies } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-&nbsp;
-        // Convert the uploaded file buffer to a Base64 encoded string for the image
-        const imageBase64 = <span class="cstat-no" title="statement not covered" >req.file.buffer.toString('base64');</span>
-&nbsp;
-        // Fetch all existing titles, normalize them, and store in an array
-        const existingTitles = <span class="cstat-no" title="statement not covered" >await Book.find({}, 'title');</span>
-        const normalizedTitles = <span class="cstat-no" title="statement not covered" >existingTitles.map(<span class="fstat-no" title="function not covered" >bo</span>ok =&gt; <span class="cstat-no" title="statement not covered" >book.title.toLowerCase().trim())</span>;</span>
-&nbsp;
-        // Check if the normalized input title exists in the array of normalized titles
-        const normalizedInputTitle = <span class="cstat-no" title="statement not covered" >title.toLowerCase().trim();</span>
-<span class="cstat-no" title="statement not covered" >        if (normalizedTitles.includes(normalizedInputTitle)) {</span>
-<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: 'title_exists' });</span>
+        // Validate book ID
+        const book = <span class="cstat-no" title="statement not covered" >await Book.findById(book_id);</span>
+<span class="cstat-no" title="statement not covered" >        if (!book) {</span>
+<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: "Invalid book ID" });</span>
         }
 &nbsp;
-        // Check for existing ISBN to prevent duplicate entries
-        const existingISBN = <span class="cstat-no" title="statement not covered" >await Book.findOne({ isbn });</span>
-<span class="cstat-no" title="statement not covered" >        if (existingISBN) {</span>
-<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: 'isbn_exists' });</span>
+        // Validate borrower name
+<span class="cstat-no" title="statement not covered" >        if (!borrower_name) {</span>
+<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: "Borrower name is required" });</span>
         }
 &nbsp;
-        // Ensure ISBN is numeric and has exactly 13 digits
-<span class="cstat-no" title="statement not covered" >        if (!/^\d{13}$/.test(isbn)) {</span>
-<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: 'isbn_invalid' });</span>
+        // Validate dates
+        const borrowDateObj = <span class="cstat-no" title="statement not covered" >new Date(borrowDate);</span>
+        const returnDateObj = <span class="cstat-no" title="statement not covered" >new Date(returnDate);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (isNaN(borrowDateObj.getTime()) || isNaN(returnDateObj.getTime())) {</span>
+<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: "Invalid date format for borrowDate or returnDate" });</span>
         }
 &nbsp;
-        // Create a new instance of the Book model with the provided data
-        const newBook = <span class="cstat-no" title="statement not covered" >new Book({</span>
-            title,
-            author,
-            isbn,
-            genre,
-            availableCopies,
-            image: imageBase64, // Store image as Base64 encoded string
+        // Check if the book is currently borrowed (e.g., an active transaction exists)
+        const activeTransaction = <span class="cstat-no" title="statement not covered" >await BorrowTransaction.findOne({</span>
+            book_id: book._id,
+            returnDate: { $gte: new Date() } // Book is considered "borrowed" if returnDate is in the future
         });
 &nbsp;
-        // Save the new book instance to the database
-<span class="cstat-no" title="statement not covered" >        await newBook.save();</span>
-<span class="cstat-no" title="statement not covered" >        res.status(201).json({ message: 'Book added successfully!' }); </span>// Send success response
+<span class="cstat-no" title="statement not covered" >        if (activeTransaction) {</span>
+<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: "This book is already borrowed by another user" });</span>
+        }
+&nbsp;
+        // Create new transaction if the book is available
+        const newTransaction = <span class="cstat-no" title="statement not covered" >new BorrowTransaction({</span>
+            book_id: book._id,
+            borrower: { name: borrower_name },
+            borrowDate: borrowDateObj,
+            returnDate: returnDateObj,
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        await newTransaction.save();</span>
+<span class="cstat-no" title="statement not covered" >        res.json({ message: "Transaction added successfully!" });</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >        console.error('Error adding book:', error); </span>// Log any errors encountered
-<span class="cstat-no" title="statement not covered" >        res.status(500).json({ error: 'An error occurred while adding the book.' }); </span>// Send error response
+<span class="cstat-no" title="statement not covered" >        res.status(500).json({ error: "Error saving transaction: " + error.message });</span>
     }
 }
 &nbsp;
-// Export the addBook function to make it available in other parts of the application
-module.exports = { addBook };
+module.exports = { addTransaction };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -232,7 +226,7 @@ module.exports = { addBook };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-22T06:59:36.722Z
+                at 2024-11-22T05:31:46.944Z
             </div>
         <script src="prettify.js"></script>
         <script>
