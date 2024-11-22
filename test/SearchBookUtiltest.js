@@ -6,7 +6,7 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const sinon = require('sinon');
 const mongoose = require('mongoose');                     // Import mongoose for MongoDB interaction
-
+ 
 let baseUrl;
 let sandbox;
 describe('Resource API', () => {
@@ -22,18 +22,18 @@ describe('Resource API', () => {
             console.error('Error connecting to MongoDB:', err);
             throw err;
         }
-
+ 
         // Start the server
         const { address, port } = await server.address();
         baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
     });
-
+ 
     after(async () => {
         // Close the server
         await new Promise((resolve) => {
             server.close(() => resolve());
         });
-
+ 
         // Drop and close MongoDB connection
         if (mongoose.connection.readyState) {
             // await mongoose.connection.db.dropDatabase();
@@ -41,19 +41,12 @@ describe('Resource API', () => {
             await mongoose.connection.close();
         }
     });
-    afterEach(() => {
-        // Restore the sandbox after each test
-        if (sandbox) {
-            sandbox.restore();
-        }
-    });
-
+ 
     // Your test cases go here
-
-
-
+ 
+ 
     describe('GET /search', () => {
-
+ 
         // Test case for missing query parameter
         it('should return 400 if the query parameter is missing', (done) => {
             chai.request(baseUrl)
@@ -64,7 +57,7 @@ describe('Resource API', () => {
                     done();
                 });
         });
-
+ 
         // Test case for empty query string
         it('should return 400 if the query is an empty string', (done) => {
             chai.request(baseUrl)
@@ -75,7 +68,7 @@ describe('Resource API', () => {
                     done();
                 });
         });
-
+ 
         // Test case for query longer than 100 characters
         it('should return 400 if the query is too long', (done) => {
             const longQuery = 'a'.repeat(101); // 101 characters long
@@ -87,11 +80,10 @@ describe('Resource API', () => {
                     done();
                 });
         });
-
+ 
         // Test case for successful search with matching book title
         it('should return 200 and matching books', function(done) {
             this.timeout(5000); // Increase timeout if needed
-        
             chai.request(baseUrl)
                 .get('/search?query=the')
                 .end((err, res) => {
@@ -99,14 +91,13 @@ describe('Resource API', () => {
                         console.error('Error searching for books:', err);
                         return done(err);
                     }
-        
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.an('array').that.is.not.empty;
                     done();
                 });
         });
-        
 
+ 
         // Test case for search that returns no results
         it('should return 404 if no books match the search query', (done) => {
             chai.request(baseUrl)
@@ -117,7 +108,7 @@ describe('Resource API', () => {
                     done();
                 });
         });
-
+ 
         // Test case for valid search with different casing (case-insensitive search)
         // it('should return 200 and matching books with case-insensitive search', (done) => {
         //     const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
@@ -135,7 +126,7 @@ describe('Resource API', () => {
         //                 });
         //         });
         // });
-
+ 
         // Test case for a query containing special characters that require escaping
         it('should return 400 if the query contains special characters', (done) => {
             chai.request(baseUrl)
@@ -152,7 +143,6 @@ describe('Resource API', () => {
             const { address, port } = await server.address();
             baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
         });
-    
         after(() => {
             return new Promise((resolve) => {
                 server.close(() => {
@@ -160,20 +150,16 @@ describe('Resource API', () => {
                 });
             });
         });
-    
         afterEach(() => {
             if (sandbox) {
                 sandbox.restore();
             }
         });
-    
         it('should return 500 if there is a MongoDB query error', (done) => {
             sandbox = sinon.createSandbox();
-    
             // Mock MongoDB's `find` operation to simulate a query failure
             const bookCollection = require('../models/book.js'); // Replace with your actual MongoDB model or collection module
             sandbox.stub(bookCollection, 'find').throws(new Error('MongoDB query failed'));
-    
             chai.request(baseUrl)
                 .get('/search?query=test') // Replace with your actual route
                 .end((err, res) => {
@@ -182,23 +168,17 @@ describe('Resource API', () => {
                     done();
                 });
         });
-    
         // it('should return 500 if there is a MongoDB connection error', async () => {
         //     sandbox = sinon.createSandbox();
-        
         //     // Set the MONGODB_URI for testing purposes if it's not already set
         //     process.env.MONGODB_URI = 'mongodb://localhost:27017/test'; // Use an invalid or unreachable URI for testing
-        
         //     const mongoose = require('mongoose');
-            
         //     // Mock mongoose.connect to simulate a connection error
         //     sandbox.stub(mongoose, 'connect').rejects(new Error('MongoDB connection error'));
-        
         //     try {
         //         // Make a request to the search endpoint
         //         const res = await chai.request(baseUrl)
         //             .get('/search?query=the');  // Replace with your actual route
-                
         //         // If the connection error is properly handled, the response should be a 500
         //         expect(res).to.have.status(500);
         //         expect(res.body.error).to.equal('Internal Server Error');
@@ -218,17 +198,12 @@ describe('Resource API', () => {
         //         sandbox.restore();
         //     }
         // });
-        
-        
-        
-        
-    
+
+
         it('should return 500 if an unexpected error occurs during a MongoDB operation', (done) => {
             sandbox = sinon.createSandbox();
-        
             const mockCollection = require('../models/book.js');
             sandbox.stub(mockCollection, 'find').throws(new Error('Unexpected server error'));
-        
             chai.request(baseUrl)
                 .get('/search?query=The')
                 .end((err, res) => {
@@ -237,6 +212,5 @@ describe('Resource API', () => {
                     done();
                 });
         });
-        
     });
 });
