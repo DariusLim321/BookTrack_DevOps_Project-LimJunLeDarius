@@ -78,7 +78,6 @@ function addBookFeature() {
             alert('Book added successfully!');
             resetForm();
             closeForm();
-            getBooks();
         } catch (error) {
             console.error('Error:', error); // Log any errors
             alert('An error occurred while adding the book.'); // Alert user of failure
