@@ -14,7 +14,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cypress/code-coverage": "^3.13.7",
     "body-parser": "^1.20.3",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
@@ -30,6 +29,8 @@
     "nyc": "^17.1.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.13.7",
+    "istanbul-lib-coverage": "^3.2.2",
     "mongodb-memory-server": "^10.1.2",
     "sinon": "^19.0.2"
   }
