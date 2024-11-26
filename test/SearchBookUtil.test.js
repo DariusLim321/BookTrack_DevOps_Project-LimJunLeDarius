@@ -8,7 +8,6 @@ const sinon = require('sinon');
 const mongoose = require('mongoose');                     // Import mongoose for MongoDB interaction
  
 let baseUrl;
-let sandbox;
 describe('Resource API', () => {
     before(async () => {
         // Connect to MongoDB
@@ -139,75 +138,40 @@ describe('Resource API', () => {
         });
     });
     describe('Resource API with MongoDB - Server Error Cases', () => {
-        before(async () => {
-            const { address, port } = await server.address();
-            baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
+    
+        let sandbox;
+        
+        beforeEach(() => {
+            sandbox = sinon.createSandbox();  // Only for server error tests
         });
-        after(() => {
-            return new Promise((resolve) => {
-                server.close(() => {
-                    resolve();
-                });
-            });
-        });
+    
         afterEach(() => {
             if (sandbox) {
-                sandbox.restore();
+                sandbox.restore();  // Only for server error tests
             }
         });
+        
         it('should return 500 if there is a MongoDB query error', (done) => {
-            sandbox = sinon.createSandbox();
-            // Mock MongoDB's `find` operation to simulate a query failure
-            const bookCollection = require('../models/book.js'); // Replace with your actual MongoDB model or collection module
+            const bookCollection = require('../models/book.js'); 
             sandbox.stub(bookCollection, 'find').throws(new Error('MongoDB query failed'));
+    
             chai.request(baseUrl)
-                .get('/search?query=test') // Replace with your actual route
+                .get('/search?query=test') 
                 .end((err, res) => {
                     expect(res).to.have.status(500);
                     expect(res.body.error).to.equal('Internal Server Error');
                     done();
                 });
         });
-        // it('should return 500 if there is a MongoDB connection error', async () => {
-        //     sandbox = sinon.createSandbox();
-        //     // Set the MONGODB_URI for testing purposes if it's not already set
-        //     process.env.MONGODB_URI = 'mongodb://localhost:27017/test'; // Use an invalid or unreachable URI for testing
-        //     const mongoose = require('mongoose');
-        //     // Mock mongoose.connect to simulate a connection error
-        //     sandbox.stub(mongoose, 'connect').rejects(new Error('MongoDB connection error'));
-        //     try {
-        //         // Make a request to the search endpoint
-        //         const res = await chai.request(baseUrl)
-        //             .get('/search?query=the');  // Replace with your actual route
-        //         // If the connection error is properly handled, the response should be a 500
-        //         expect(res).to.have.status(500);
-        //         expect(res.body.error).to.equal('Internal Server Error');
-        //     } catch (err) {
-        //         // Check for err.response if it's available
-        //         if (err.response) {
-        //             // If we have a response, we can check the error status and message
-        //             expect(err.response).to.have.status(500);
-        //             expect(err.response.body.error).to.equal('Internal Server Error');
-        //         } else {
-        //             // If no response object is available, this is a different type of error (likely before response)
-        //             console.error('Error without response:', err); // Log error for better diagnostics
-        //             throw new Error('Test failed due to no response object');
-        //         }
-        //     } finally {
-        //         // Always restore the sandbox to clean up stubs and mocks
-        //         sandbox.restore();
-        //     }
-        // });
-
-
+    
         it('should return 500 if an unexpected error occurs during a MongoDB operation', (done) => {
-            sandbox = sinon.createSandbox();
             const mockCollection = require('../models/book.js');
             sandbox.stub(mockCollection, 'find').throws(new Error('Unexpected server error'));
+    
             chai.request(baseUrl)
                 .get('/search?query=The')
                 .end((err, res) => {
-                    expect(res).to.have.status(500);  // Ensure this checks for status 500
+                    expect(res).to.have.status(500);
                     expect(res.body.error).to.equal('Internal Server Error');
                     done();
                 });
