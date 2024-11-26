@@ -44,41 +44,10 @@ function searchBooks() {
                 // Display filtered books only if some books are found
                 displayBooks(filteredBooks);
             }
-        } 
-        // Handle invalid search query (status 400)
-        else if (request.status === 400) {
-            alert('Invalid search query. Please ensure you are using the correct format and try again.');
-            console.error('Invalid search query:', request.statusText);
-        } 
-        // Handle no books found (status 404)
-        else if (request.status === 404) {
-            alert('No books found matching your search criteria.', request.statusText);
-        } 
-        // Handle other unsuccessful status codes
-        else {
-            console.error('Error fetching search results:', request.statusText);
-            alert('Failed to retrieve search results. Please try again later.');
+        } else if (request.status === 404) {
+            alert('No books found matching your search criteria.');
         }
-    };
-
-    // Define the onerror event handler for network errors
-    request.onerror = function () {
-        document.getElementById('loading').style.display = 'none'; // Hide loading indicator
         
-        // Log network error and alert the user
-        console.error('Network error while fetching search results');
-        alert('An error occurred while fetching search results. Please check the console for details.');
-    };
-
-    // Define the ontimeout event handler for request timeout
-    request.ontimeout = function () {
-        document.getElementById('loading').style.display = 'none'; // Hide loading indicator
-        
-        // Alert the user about the request timeout
-        alert('The request timed out. Please try again.');
-    };
-
-    // Send the request to the server
     request.send();
 }
 
@@ -93,4 +62,5 @@ function clearSearch() {
     document.getElementById('searchInput').value = '';
     toggleClearButton();
     getBooks(); // Display all books again
+}
 }
