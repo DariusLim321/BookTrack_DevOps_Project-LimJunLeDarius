@@ -3,7 +3,7 @@ name: Automatic Testing for BookTrack Search Function
 on:
   push:
     branches:
-      - main  # Workflow will be triggered whenever there is a push in main branch
+      - main  # Workflow will be triggered whenever there is a push in the main branch
 
 jobs:
   test:
@@ -11,17 +11,23 @@ jobs:
     steps:
       - name: Checkout code from GitHub Repo
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js in Ubuntu
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      
+
       - name: Remove existing node_modules folder from cloned project
         run: rm -rf /home/runner/work/BookTrack_DevOps_Project-LimJunLeDarius/BookTrack_DevOps_Project-LimJunLeDarius/node_modules
-      
+
       - name: Install dependencies based on package.json
         run: npm install
-      
+
       - name: Run tests in "tests" folder
         run: npm run backend-test
+
+      - name: Instrument the frontend code
+        run: cp -R public instrumented & npx nyc instrument public instrumented
+
+      - name: Run the frontend test cases
+        run: rm -rf .nyc_output & npx nyc --nycrc-path .nycrc-frontend cypress run
