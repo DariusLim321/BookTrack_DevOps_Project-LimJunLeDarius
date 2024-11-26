@@ -97,7 +97,7 @@ describe('Resource API', () => {
         });
 
  
-        // Test case for search that returns no results
+        // Testing case for search that returns no results
         it('should return 404 if no books match the search query', (done) => {
             chai.request(baseUrl)
                 .get('/search?query=nonexistentbooktitle')
