@@ -44,19 +44,23 @@ function searchBooks() {
                 // Display filtered books only if some books are found
                 displayBooks(filteredBooks);
             }
-        } 
-    };
-
+        } else if (request.status === 404) {
+            alert('No books found matching your search criteria.');
+        }
+        
     request.send();
-};
+}
 
 function toggleClearButton() {
     const searchInput = document.getElementById('searchInput');
     const clearButton = document.getElementById('clearSearchBtn');
     clearButton.style.display = searchInput.value.trim() ? 'inline' : 'none';
-};
+}
 
+// Function to clear the search input and reset the book list
 function clearSearch() {
     document.getElementById('searchInput').value = '';
     toggleClearButton();
-    getBooks();}
+    getBooks(); // Display all books again
+}
+}
