@@ -38,13 +38,14 @@ function searchBooks() {
             const filteredBooks = JSON.parse(request.responseText);
             
             // Handle no data found
-            if (filteredBooks.length === 0) {
-                alert('No books found matching your search criteria.');
-            } else {
+            
                 // Display filtered books only if some books are found
                 displayBooks(filteredBooks);
-            }
+            
         } 
+        
+        // Handle no books found (status 404)
+
         else if (request.status === 404) {
             alert('No books found matching your search criteria.');
         }
