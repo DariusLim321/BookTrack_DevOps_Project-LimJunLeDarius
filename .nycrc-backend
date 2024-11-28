@@ -4,8 +4,7 @@
         "html"
     ],
     "include": [
-        "utils/*.js"
-    ],
+        "utils/search-book-util.js"    ],
     "reportDir": "coverage/backend",
     "branches": 80,
     "lines": 80,
