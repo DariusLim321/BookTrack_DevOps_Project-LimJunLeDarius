@@ -1,15 +1,14 @@
-const { describe, it } = require('mocha');
-const { expect } = require('chai');
-const { app, server } = require('../index');
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-chai.use(chaiHttp);
-const sinon = require('sinon');
-const mongoose = require('mongoose');                     // Import mongoose for MongoDB interaction
+const request = require('supertest'); // Import Supertest
+const { app, server } = require('../index'); // Import app and server
+const mongoose = require('mongoose'); // For MongoDB interaction
+const sinon = require('sinon'); // For mocking
+const bookCollection = require('../models/book'); // Mocked MongoDB collection
  
 let baseUrl;
+let sandbox;
+ 
 describe('Resource API', () => {
-    before(async () => {
+    beforeAll(async () => {
         // Connect to MongoDB
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
@@ -27,154 +26,93 @@ describe('Resource API', () => {
         baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
     });
  
-    after(async () => {
+    afterAll(async () => {
         // Close the server
         await new Promise((resolve) => {
             server.close(() => resolve());
         });
  
-        // Drop and close MongoDB connection
+        // Close MongoDB connection
         if (mongoose.connection.readyState) {
-            // await mongoose.connection.db.dropDatabase();
-            // console.log('Test database dropped.');
             await mongoose.connection.close();
         }
     });
  
-    // Your test cases go here
+    beforeEach(() => {
+        sandbox = sinon.createSandbox();
+    });
  
+    afterEach(() => {
+        if (sandbox) {
+            sandbox.restore();
+        }
+    });
  
     describe('GET /search', () => {
- 
-        // Test case for missing query parameter
-        it('should return 400 if the query parameter is missing', (done) => {
-            chai.request(baseUrl)
-                .get('/search')
-                .end((err, res) => {
-                    expect(res).to.have.status(400);
-                    expect(res.body.error).to.equal('Invalid parameter: "query" is required and must be a non-empty string.');
-                    done();
-                });
+        test('should return 400 if the query parameter is missing', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([]); // Stub for safety
+            const res = await request(app).get('/search');
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('Invalid parameter: "query" is required and must be a non-empty string.');
         });
  
-        // Test case for empty query string
-        it('should return 400 if the query is an empty string', (done) => {
-            chai.request(baseUrl)
-                .get('/search?query=')
-                .end((err, res) => {
-                    expect(res).to.have.status(400);
-                    expect(res.body.error).to.equal('Invalid parameter: "query" is required and must be a non-empty string.');
-                    done();
-                });
+        test('should return 400 if the query is an empty string', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([]); // Stub for safety
+            const res = await request(app).get('/search?query=');
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('Invalid parameter: "query" is required and must be a non-empty string.');
         });
  
-        // Test case for query longer than 100 characters
-        it('should return 400 if the query is too long', (done) => {
+        test('should return 400 if the query is too long', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([]); // Stub for safety
             const longQuery = 'a'.repeat(101); // 101 characters long
-            chai.request(baseUrl)
-                .get(`/search?query=${longQuery}`)
-                .end((err, res) => {
-                    expect(res).to.have.status(400);
-                    expect(res.body.error).to.equal('Query is too long. Max length is 100 characters.');
-                    done();
-                });
+            const res = await request(app).get(`/search?query=${longQuery}`);
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('Query is too long. Max length is 100 characters.');
         });
  
-        // Test case for successful search with matching book title
-        it('should return 200 and matching books', function(done) {
-            this.timeout(5000); // Increase timeout if needed
-            chai.request(baseUrl)
-                .get('/search?query=the')
-                .end((err, res) => {
-                    if (err) {
-                        console.error('Error searching for books:', err);
-                        return done(err);
-                    }
-                    expect(res).to.have.status(200);
-                    expect(res.body).to.be.an('array').that.is.not.empty;
-                    done();
-                });
-        });
-
+        test('should return 200 and matching books', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([
+                { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
+                { title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
+            ]); // Stub for matching books
  
-        // Testing case for search that returns no results
-        it('should return 404 if no books match the search query', (done) => {
-            chai.request(baseUrl)
-                .get('/search?query=nonexistentbooktitle')
-                .end((err, res) => {
-                    expect(res).to.have.status(404);
-                    expect(res.body.message).to.equal('No books found matching your search.');
-                    done();
-                });
+            const res = await request(app).get('/search?query=the');
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Array);
+            expect(res.body.length).toBeGreaterThan(0);
         });
  
-        // Test case for valid search with different casing (case-insensitive search)
-        // it('should return 200 and matching books with case-insensitive search', (done) => {
-        //     const mockBook = { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' };
-        //     chai.request(baseUrl)
-        //         .post('/add-resource') // Assuming /add-resource adds a book or resource to the database
-        //         .send(mockBook)
-        //         .end((err, res) => {
-        //             chai.request(baseUrl)
-        //                 .get('/search?query=the')
-        //                 .end((err, res) => {
-        //                     expect(res).to.have.status(200);
-        //                     expect(res.body).to.be.an('array').that.is.not.empty;
-        //                     // expect(res.body[0].title).to.equal('The Great Gatsby');
-        //                     done();
-        //                 });
-        //         });
-        // });
+        test('should return 404 if no books match the search query', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([]); // Stub no results
+            const res = await request(app).get('/search?query=nonexistentbooktitle');
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe('No books found matching your search.');
+        });
  
-        // Test case for a query containing special characters that require escaping
-        it('should return 400 if the query contains special characters', (done) => {
-            chai.request(baseUrl)
-                .get('/search?query=book$%^')
-                .end((err, res) => {
-                    expect(res).to.have.status(400);
-                    expect(res.body.error).to.equal('Query contains special characters. Only alphanumeric characters and spaces are allowed.');
-                    done();
-                });
+        test('should return 400 if the query contains special characters', async () => {
+            sandbox.stub(bookCollection, 'find').resolves([]); // Stub for safety
+            const res = await request(app).get('/search?query=book$%^');
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('Query contains special characters. Only alphanumeric characters and spaces are allowed.');
         });
     });
+ 
     describe('Resource API with MongoDB - Server Error Cases', () => {
-    
-        let sandbox;
-        
-        beforeEach(() => {
-            sandbox = sinon.createSandbox();  // Only for server error tests
-        });
-    
-        afterEach(() => {
-            if (sandbox) {
-                sandbox.restore();  // Only for server error tests
-            }
-        });
-        
-        it('should return 500 if there is a MongoDB query error', (done) => {
-            const bookCollection = require('../models/book.js'); 
+        test('should return 500 if there is a MongoDB query error', async () => {
             sandbox.stub(bookCollection, 'find').throws(new Error('MongoDB query failed'));
-    
-            chai.request(baseUrl)
-                .get('/search?query=test') 
-                .end((err, res) => {
-                    expect(res).to.have.status(500);
-                    expect(res.body.error).to.equal('Internal Server Error');
-                    done();
-                });
+ 
+            const res = await request(app).get('/search?query=test');
+            expect(res.status).toBe(500);
+            expect(res.body.error).toBe('Internal Server Error');
         });
-    
-        it('should return 500 if an unexpected error occurs during a MongoDB operation', (done) => {
-            const mockCollection = require('../models/book.js');
-            sandbox.stub(mockCollection, 'find').throws(new Error('Unexpected server error'));
-    
-            chai.request(baseUrl)
-                .get('/search?query=The')
-                .end((err, res) => {
-                    expect(res).to.have.status(500);
-                    expect(res.body.error).to.equal('Internal Server Error');
-                    done();
-                });
+ 
+        test('should return 500 if an unexpected error occurs during a MongoDB operation', async () => {
+            sandbox.stub(bookCollection, 'find').throws(new Error('Unexpected server error'));
+ 
+            const res = await request(app).get('/search?query=The');
+            expect(res.status).toBe(500);
+            expect(res.body.error).toBe('Internal Server Error');
         });
     });
 });
