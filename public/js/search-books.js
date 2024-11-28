@@ -38,7 +38,11 @@ function searchBooks() {
             const filteredBooks = JSON.parse(request.responseText);
             displayBooks(filteredBooks);
             
+
         } 
+        
+        // Handle no books found (status 404)
+
         else if (request.status === 404) {
             clearSearch()
             alert('No books found matching your search criteria.');
