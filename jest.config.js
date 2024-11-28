@@ -2,7 +2,7 @@ module.exports = {
     collectCoverage: true,
     coverageDirectory: 'coverage',
     coverageThreshold: {
-      "utils/search-book-util.js" : {
+      global: {
         statements: 80,
         branches: 80,
         functions: 80,

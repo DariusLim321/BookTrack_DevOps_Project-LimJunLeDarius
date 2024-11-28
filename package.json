@@ -6,9 +6,13 @@
   "scripts": {
     "backend-test": "nyc --nycrc-path .nycrc-backend mocha",
     "frontend-instrument": "xcopy public instrumented /I /E /Y & nyc instrument public instrumented",
-    "frontend-test": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run",
+
+"frontend-test": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "frontend-test-chrome": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser chrome",
+    "frontend-test-firefox": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser firefox",
+    "frontend-test-edge": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser edge"
   },
   "keywords": [],
   "author": "",
