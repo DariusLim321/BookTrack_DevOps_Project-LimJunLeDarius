@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "backend-test": "nyc --nycrc-path .nycrc-backend mocha",
+    "frontend-instrument": "xcopy public instrumented /I /E /Y & nyc instrument public instrumented",
+"frontend-test": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
@@ -12,10 +14,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cypress/code-coverage": "^3.13.7",
     "body-parser": "^1.20.3",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
+    "cypress": "^13.16.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "fs": "^0.0.1-security",
