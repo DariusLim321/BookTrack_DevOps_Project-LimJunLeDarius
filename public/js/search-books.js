@@ -40,6 +40,7 @@ function searchBooks() {
             
         } 
         else if (request.status === 404) {
+            clearSearch()
             alert('No books found matching your search criteria.');
         }
     };
