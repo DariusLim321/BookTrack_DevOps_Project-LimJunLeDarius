@@ -36,17 +36,15 @@ function searchBooks() {
         if (request.status >= 200 && request.status < 300) {
             // Parse the JSON response to get the filtered books array
             const filteredBooks = JSON.parse(request.responseText);
+            displayBooks(filteredBooks);
             
-            // Handle no data found
-            
-                // Display filtered books only if some books are found
-                displayBooks(filteredBooks);
-            
+
         } 
         
         // Handle no books found (status 404)
 
         else if (request.status === 404) {
+            clearSearch()
             alert('No books found matching your search criteria.');
         }
     };

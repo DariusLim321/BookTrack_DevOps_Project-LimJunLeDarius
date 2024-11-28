@@ -7,6 +7,9 @@
     "backend-test": "jest --coverage",
     "test": "jest",
     "start": "nodemon index.js"
+    "frontend-instrument": "xcopy public instrumented /I /E /Y & nyc instrument public instrumented",
+"frontend-test": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run",
+    "frontend-test-chrome": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser chrome"
   },
   "keywords": [],
   "author": "",
