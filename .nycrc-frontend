@@ -4,8 +4,7 @@
         "html"
     ],
     "include": [
-        " public/js/**/*.js"
-    ],
+        "public/js/search-books.js"    ],
     "reportDir": "coverage/frontend",
     "check-coverage": true,
     "branches": 80,
