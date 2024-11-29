@@ -64,13 +64,32 @@ describe('BookTrack Frontend', () => {
   
     // Wait for the alert to appear (adjust the wait time if necessary)
     cy.wait(2000); // Wait for the simulated loading time (adjust as necessary for your app)
-
     // Capture the alert and verify its content
     cy.on('window:alert', (alertText) => {
       // Assert that the alert contains the "no results" message
       expect(alertText).to.equal('No books found matching your search criteria.');
     });
   });
+
+  // Test that the search input is cleared automatically if no results are found
+it('should clear the search input if no results are found', () => {
+  cy.visit(baseUrl);
+  const invalidSearchTerm = 'InvalidBookName'; // A search term that will return no results
+  cy.get('#searchInput').type(invalidSearchTerm); // Type the invalid search term
+  cy.get('#searchButton').click(); // Click the search button
+
+  // Wait for the results to be processed
+  cy.wait(2000); // Adjust the wait time as needed based on your app's response time
+
+  // Verify the alert for no results
+  cy.on('window:alert', (alertText) => {
+    expect(alertText).to.equal('No books found matching your search criteria.');
+  });
+
+  // Verify that the search input is cleared
+  cy.get('#searchInput').should('have.value', ''); // Check if the input field is cleared
+});
+
 
   // Test for empty or whitespace search term
   it('should not allow an empty or whitespace-only search term', () => {
