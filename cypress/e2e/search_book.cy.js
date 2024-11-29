@@ -41,36 +41,90 @@ describe('BookTrack Frontend', () => {
 
   // Test the search functionality
   it('should fetch and display results based on the search term', () => {
-    cy.visit(baseUrl);
     const searchTerm = 'the';
+  
+    // Mock data for the search results
+    const mockResults = [
+      { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
+      { id: 2, title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
+    ];
+  
+    // Intercept the search request with the query parameter in the URL
+    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(searchTerm)}`, {
+      statusCode: 200,
+      body: mockResults,
+    }).as('searchBooks');
+  
+    // Visit the app and perform the search
+    cy.visit(baseUrl);
     cy.get('#searchInput').type(searchTerm); // Type the search term
     cy.get('#searchButton').click(); // Click the search button
-
-    // Simulate loading and check if the books are displayed
-    cy.wait(2000); // Wait for the simulated loading time (adjust as necessary for your app)
-
-    // Verify the results
+  
+    // Wait for the intercepted request to complete
+    cy.wait('@searchBooks');
+  
+    // Verify the results are displayed
     cy.get('#bookContainer')
-      .children()
-      .should('exist')
+  .should('exist')
+  .and('be.visible');  // Check if it's visible after the mock response is handled
+
   });
+  
 
   // Test for no results
   it('should display a "no results" message if no books match the search term', () => {
-    cy.visit(baseUrl);
     const invalidSearchTerm = 'InvalidBookName';
+  
+    // Intercept the search request and respond with a 404 status for no results
+    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
+      statusCode: 404, // Simulating a 404 error when no books are found
+      body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
+    }).as('searchBooks');
+  
+    // Visit the app and perform the search
+    cy.visit(baseUrl);
     cy.get('#searchInput').type(invalidSearchTerm); // Type an invalid search term
     cy.get('#searchButton').click(); // Click the search button
   
-    // Wait for the alert to appear (adjust the wait time if necessary)
-    cy.wait(2000); // Wait for the simulated loading time (adjust as necessary for your app)
-
-    // Capture the alert and verify its content
+    // Wait for the intercepted request to complete
+    cy.wait('@searchBooks');
+  
+    // Verify that the "no results" alert is shown
     cy.on('window:alert', (alertText) => {
       // Assert that the alert contains the "no results" message
       expect(alertText).to.equal('No books found matching your search criteria.');
     });
   });
+  
+
+  // Test that the search input is cleared automatically if no results are found
+  it('should clear the search input if no results are found', () => {
+    const invalidSearchTerm = 'InvalidBookName'; // A search term that will return no results
+  
+    // Intercept the search request and respond with a 404 status for no results
+    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
+      statusCode: 404, // Simulate 404 error when no results are found
+      body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
+    }).as('searchBooks');
+  
+    // Visit the app and perform the search
+    cy.visit(baseUrl);
+    cy.get('#searchInput').type(invalidSearchTerm); // Type the invalid search term
+    cy.get('#searchButton').click(); // Click the search button
+  
+    // Wait for the intercepted request to complete
+    cy.wait('@searchBooks');
+  
+    // Verify the alert for no results
+    cy.on('window:alert', (alertText) => {
+      expect(alertText).to.equal('No books found matching your search criteria.');
+    });
+  
+    // Verify that the search input is cleared
+    cy.get('#searchInput').should('have.value', ''); // Check if the input field is cleared
+  });
+  
+
 
   // Test for empty or whitespace search term
   it('should not allow an empty or whitespace-only search term', () => {
@@ -135,6 +189,28 @@ describe('BookTrack Frontend', () => {
   
     cy.get('#searchInput').type('     '); // Type spaces
     cy.get('#clearSearchBtn').should('not.be.visible'); // Check if the clear button is hidden
+  });
+  it('should display "Failed to retrieve search results. Please try again later." when an error occurs during the search', () => {
+    const searchTerm = 'the'; // Example search term
+  
+    // Mock the XMLHttpRequest failure by intercepting the request and returning a failure status
+    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(searchTerm)}`, {
+      statusCode: 500, // Simulate server error (500 Internal Server Error)
+      body: { message: 'Internal server error' }, // Optional: Provide error message in the response body
+    }).as('searchBooksError');
+  
+    // Visit the page and perform the search
+    cy.visit(baseUrl);
+    cy.get('#searchInput').type(searchTerm); // Type the search term
+    cy.get('#searchButton').click(); // Click the search button
+  
+    // Wait for the intercepted request to complete
+    cy.wait('@searchBooksError');
+  
+    // Verify the alert for the error message
+    cy.on('window:alert', (alertText) => {
+      expect(alertText).to.equal('Failed to retrieve search results. Please try again later.');
+    });
   });
   
 });

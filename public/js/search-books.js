@@ -47,6 +47,10 @@ function searchBooks() {
             clearSearch()
             alert('No books found matching your search criteria.');
         }
+        else {
+            console.error('Error fetching search results:', request.statusText);
+            alert('Failed to retrieve search results. Please try again later.');
+        }
     };
     request.send();
 };
