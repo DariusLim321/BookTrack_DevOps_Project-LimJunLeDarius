@@ -10,7 +10,7 @@ module.exports = {
     },
   },
   testMatch: [
-    "**/jest/SearchBookUtil.test copy.js"
+    "**/jest/JestSearchBookUtil.test.js"
   ],
   collectCoverageFrom: [
     "utils/search-book-util.js"  // Collect coverage for this specific file
