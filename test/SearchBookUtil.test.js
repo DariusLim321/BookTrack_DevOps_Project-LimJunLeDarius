@@ -8,7 +8,8 @@ const sinon = require('sinon');
 const mongoose = require('mongoose'); // Import mongoose for MongoDB interaction
 
 let baseUrl;
-describe('Resource API', () => {
+
+describe('bookTrack Search utility', () => {
     before(async () => {
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
@@ -35,7 +36,8 @@ describe('Resource API', () => {
         }
     });
 
-    describe('GET /search', () => {
+    // Test cases for API input validation and behavior
+    describe('Input Validation and Behavior', () => {
         it('should return 400 if the query parameter is missing', (done) => {
             chai.request(baseUrl)
                 .get('/search')
@@ -120,7 +122,8 @@ describe('Resource API', () => {
         });
     });
 
-    describe('Resource API with MongoDB - Server Error Cases', () => {
+    // Test cases for MongoDB error scenarios
+    describe('Error Handling with MongoDB', () => {
         let sandbox;
 
         beforeEach(() => {
