@@ -97,6 +97,13 @@ describe('BookTrack Search API ', () => {
       expect(res.body.error).toBe('Query contains special characters. Only alphanumeric characters and spaces are allowed.');
     });
   });
+  test('should return 400 if the query is only whitespace', async () => {
+    sandbox.stub(bookCollection, 'find').resolves([]); // Stub for safety
+    const res = await request(app).get('/search?query=   '); // Query with only whitespace
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Invalid parameter: "query" is required and must be a non-empty string.');
+  });
+  
 
   describe('Resource API with MongoDB - Server Error Cases', () => {
     test('should return 500 if there is a MongoDB query error', async () => {
