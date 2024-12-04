@@ -1,5 +1,5 @@
 // Cypress Tests
-describe('BookTrack Frontend', () => {
+describe('Search Book Frontend', () => {
   let baseUrl;
 
   // Start the server before tests and set the base URL
