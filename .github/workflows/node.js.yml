@@ -18,12 +18,17 @@ jobs:
           node-version: 18
 
       - name: Remove existing node_modules folder from cloned project
-        run: rm -rf /home/runner/work/BookTrack_DevOps_Project-LimJunLeDarius/BookTrack_DevOps_Project-LimJunLeDarius/node_modules
+        run: rm -rf /home/runner/work/BookTrack_DevOps_Project-LimJunLeDarius/BookTrack_DevOps_Project-LimJunLeDarius/node_modules/*
 
       - name: Install dependencies based on package.json
         run: npm install
 
       - name: Run tests in "tests" folder
         run: npm run backend-test
+      - name: Instrument the frontend code
+        run: cp -R public instrumented & npx nyc instrument public instrumented
+        
+      - name: Run the frontend test cases
+        run: rm -rf .nyc_output & npx nyc --nycrc-path .nycrc-frontend cypress run
 
      
