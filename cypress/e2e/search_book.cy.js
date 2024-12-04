@@ -14,32 +14,6 @@ describe('Search Book Frontend', () => {
   after(() => {
     cy.task('stopServer'); // Stop the server after the tests are complete
   });
-
-  // Test the visibility and functionality of search elements
-  it('should display the search input and button', () => {
-    cy.visit(baseUrl);
-    cy.get('#searchInput').should('be.visible'); // Check if the search input is visible
-    cy.get('#searchButton').should('be.visible').and('contain.text', 'Search'); // Check if the search button is visible
-  });
-
-  // Test typing in the search input
-  it('should allow typing in the search input', () => {
-    cy.visit(baseUrl);
-    cy.get('#searchInput').click();
-    cy.get('#searchInput').type('the', { force: true });
-  });
-
-  // Test clearing the search input using the clear button
-  it('should display the clear button after typing and clear the input on click', () => {
-    cy.visit(baseUrl);
-    const searchTerm = 'the';
-    cy.get('#searchInput').type(searchTerm); // Type a search term
-    cy.get('#clearSearchBtn').should('be.visible'); // Check if the clear button is visible
-    cy.get('#clearSearchBtn').click(); // Click the clear button
-    cy.get('#searchInput').should('have.value', ''); // Verify the input field is cleared
-  });
-
-  // Test the search functionality
   it('should fetch and display results based on the search term', () => {
     const searchTerm = 'the';
   
@@ -69,8 +43,6 @@ describe('Search Book Frontend', () => {
   .and('be.visible');  // Check if it's visible after the mock response is handled
 
   });
-  
-
   // Test for no results
   it('should display a "no results" message if no books match the search term', () => {
     const invalidSearchTerm = 'InvalidBookName';
@@ -95,37 +67,6 @@ describe('Search Book Frontend', () => {
       expect(alertText).to.equal('No books found matching your search criteria.');
     });
   });
-  
-
-  // Test that the search input is cleared automatically if no results are found
-  it('should clear the search input if no results are found', () => {
-    const invalidSearchTerm = 'InvalidBookName'; // A search term that will return no results
-  
-    // Intercept the search request and respond with a 404 status for no results
-    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
-      statusCode: 404, // Simulate 404 error when no results are found
-      body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
-    }).as('searchBooks');
-  
-    // Visit the app and perform the search
-    cy.visit(baseUrl);
-    cy.get('#searchInput').type(invalidSearchTerm); // Type the invalid search term
-    cy.get('#searchButton').click(); // Click the search button
-  
-    // Wait for the intercepted request to complete
-    cy.wait('@searchBooks');
-  
-    // Verify the alert for no results
-    cy.on('window:alert', (alertText) => {
-      expect(alertText).to.equal('No books found matching your search criteria.');
-    });
-  
-    // Verify that the search input is cleared
-    cy.get('#searchInput').should('have.value', ''); // Check if the input field is cleared
-  });
-  
-
-
   // Test for empty or whitespace search term
   it('should not allow an empty or whitespace-only search term', () => {
     cy.visit(baseUrl);
@@ -160,36 +101,6 @@ describe('Search Book Frontend', () => {
       expect(alertText).to.equal('Search term contains special characters. Only alphanumeric characters and spaces are allowed.');
     });
   });
-  it('should show the clear button when there is text in the search input', () => {
-    cy.visit(baseUrl);
-    cy.get('#searchInput').type('Book');
-    cy.get('#clearSearchBtn').should('be.visible');
-  });
-
-  it('should hide the clear button when the search input is empty', () => {
-    cy.visit(baseUrl);
-    cy.get('#clearSearchBtn').should('not.be.visible');
-    cy.get('#searchInput').type('Book').clear();
-    cy.get('#clearSearchBtn').should('not.be.visible');
-  });
-
-  it('should clear the search input and hide the clear button when clearSearch is called', () => {
-    cy.visit(baseUrl);
-    cy.get('#searchInput').type('Book');
-    cy.get('#clearSearchBtn').should('be.visible');
-    cy.get('#clearSearchBtn').click();
-    cy.get('#searchInput').should('have.value', '');
-    cy.get('#clearSearchBtn').should('not.be.visible');
-  });
-
-  it('should hide the clear button when the input is empty or contains only spaces', () => {
-    cy.visit(baseUrl);
-    cy.get('#searchInput').clear(); // Clear any existing text
-    cy.get('#clearSearchBtn').should('not.be.visible'); // Check if the clear button is hidden
-  
-    cy.get('#searchInput').type('     '); // Type spaces
-    cy.get('#clearSearchBtn').should('not.be.visible'); // Check if the clear button is hidden
-  });
   it('should display "Failed to retrieve search results. Please try again later." when an error occurs during the search', () => {
     const searchTerm = 'the'; // Example search term
   
@@ -212,5 +123,103 @@ describe('Search Book Frontend', () => {
       expect(alertText).to.equal('Failed to retrieve search results. Please try again later.');
     });
   });
+  it('should display the search input and button', () => {
+    cy.visit(baseUrl);
+    cy.get('#searchInput').should('be.visible'); // Check if the search input is visible
+    cy.get('#searchButton').should('be.visible').and('contain.text', 'Search'); // Check if the search button is visible
+  });
+  it('should allow typing in the search input', () => {
+    cy.visit(baseUrl);
+    cy.get('#searchInput').click();
+    cy.get('#searchInput').type('the', { force: true });
+  });
+  it('should display the clear button after typing and clear the input on click', () => {
+    cy.visit(baseUrl);
+    const searchTerm = 'the';
+    cy.get('#searchInput').type(searchTerm); // Type a search term
+    cy.get('#clearSearchBtn').should('be.visible'); // Check if the clear button is visible
+    cy.get('#clearSearchBtn').click(); // Click the clear button
+    cy.get('#searchInput').should('have.value', ''); // Verify the input field is cleared
+  });
+  it('should clear the search input if no results are found', () => {
+    const invalidSearchTerm = 'InvalidBookName'; // A search term that will return no results
+  
+    // Intercept the search request and respond with a 404 status for no results
+    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
+      statusCode: 404, // Simulate 404 error when no results are found
+      body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
+    }).as('searchBooks');
+  
+    // Visit the app and perform the search
+    cy.visit(baseUrl);
+    cy.get('#searchInput').type(invalidSearchTerm); // Type the invalid search term
+    cy.get('#searchButton').click(); // Click the search button
+  
+    // Wait for the intercepted request to complete
+    cy.wait('@searchBooks');
+  
+    // Verify the alert for no results
+    cy.on('window:alert', (alertText) => {
+      expect(alertText).to.equal('No books found matching your search criteria.');
+    });
+  
+    // Verify that the search input is cleared
+    cy.get('#searchInput').should('have.value', ''); // Check if the input field is cleared
+  });
+
+  it('should show the clear button when there is text in the search input', () => {
+    cy.visit(baseUrl);
+    cy.get('#searchInput').type('Book');
+    cy.get('#clearSearchBtn').should('be.visible');
+  });
+
+  it('should hide the clear button when the search input is empty', () => {
+    cy.visit(baseUrl);
+    cy.get('#clearSearchBtn').should('not.be.visible');
+    cy.get('#searchInput').type('Book').clear();
+    cy.get('#clearSearchBtn').should('not.be.visible');
+  });
+
+  // Test the visibility and functionality of search elements
+  
+
+  // Test typing in the search input
+  
+  // Test clearing the search input using the clear button
+  
+  it('should clear the search input and hide the clear button when clearSearch is called', () => {
+    cy.visit(baseUrl);
+    cy.get('#searchInput').type('Book');
+    cy.get('#clearSearchBtn').should('be.visible');
+    cy.get('#clearSearchBtn').click();
+    cy.get('#searchInput').should('have.value', '');
+    cy.get('#clearSearchBtn').should('not.be.visible');
+  });
+
+  it('should hide the clear button when the input is empty or contains only spaces', () => {
+    cy.visit(baseUrl);
+    cy.get('#searchInput').clear(); // Clear any existing text
+    cy.get('#clearSearchBtn').should('not.be.visible'); // Check if the clear button is hidden
+  
+    cy.get('#searchInput').type('     '); // Type spaces
+    cy.get('#clearSearchBtn').should('not.be.visible'); // Check if the clear button is hidden
+  });
+
+  // Test the search functionality
+  
+  
+
+  
+  
+
+  // Test that the search input is cleared automatically if no results are found
+  
+  
+
+
+  
+
+  
+  
   
 });
