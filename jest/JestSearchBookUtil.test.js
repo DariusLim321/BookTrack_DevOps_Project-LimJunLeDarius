@@ -7,7 +7,7 @@ const bookCollection = require('../models/book'); // Mocked MongoDB collection
 let baseUrl;
 let sandbox;
 
-describe('Resource API', () => {
+describe('BookTrack Search API ', () => {
   beforeAll(async () => {
     // Connect to MongoDB
     try {
