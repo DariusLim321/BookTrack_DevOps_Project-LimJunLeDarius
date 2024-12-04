@@ -14,13 +14,11 @@
     "frontend-test-edge": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser edge",
     "frontend-test-electron": "rmdir -r .nyc_output & nyc --nycrc-path .nycrc-frontend cypress run --browser electron",
     "frontend-test-all": "npm run frontend-test-chrome && npm run frontend-test-firefox && npm run frontend-test-edge && npm run frontend-test-electron"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cypress/code-coverage": "^3.13.7",
     "body-parser": "^1.20.3",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
@@ -32,12 +30,14 @@
     "mocha": "^10.8.2",
     "mongoose": "^8.8.1",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.7",
-    "nyc": "^17.1.0"
+    "nodemon": "^3.1.7"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.13.8",
     "mongodb-memory-server": "^10.1.2",
-    "sinon": "^19.0.2",
+    "nyc": "^17.1.0",
+    "sinon": "^19.0.2"
+
     "supertest": "^7.0.0"
   }
 }
