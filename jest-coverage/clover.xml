@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1733246616772" clover="3.2.0">
-  <project timestamp="1733246616772" name="All files">
+<coverage generated="1733339353056" clover="3.2.0">
+  <project timestamp="1733339353056" name="All files">
     <metrics statements="19" coveredstatements="19" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2" elements="32" coveredelements="32" complexity="0" loc="19" ncloc="19" packages="1" files="1" classes="1"/>
-    <file name="search-book-util.js" path="C:\Users\linju\Desktop\TP Y2S2\DVOPS\Assignment\New folder1\BookTrack_DevOps_Project-LimJunLeDarius\utils\search-book-util.js">
+    <file name="search-book-util.js" path="C:\Users\linju\Desktop\TP Y2S2\DVOPS\Assignment\Part 2\BookTrack_DevOps_Project-LimJunLeDarius\utils\search-book-util.js">
       <metrics statements="19" coveredstatements="19" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
-      <line num="6" count="8" type="stmt"/>
-      <line num="9" count="8" type="cond" truecount="5" falsecount="0"/>
-      <line num="10" count="2" type="stmt"/>
+      <line num="6" count="9" type="stmt"/>
+      <line num="9" count="9" type="cond" truecount="5" falsecount="0"/>
+      <line num="10" count="3" type="stmt"/>
       <line num="14" count="6" type="cond" truecount="2" falsecount="0"/>
       <line num="15" count="1" type="stmt"/>
       <line num="19" count="5" type="stmt"/>

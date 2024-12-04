@@ -86,6 +86,15 @@ describe('BookTrack Search API', () => {
                 done();
             });
     });
+    it('should return 400 if the query contains only whitespace', (done) => {
+        chai.request(baseUrl)
+            .get('/search?query=   ')  // Query with only whitespace
+            .end((err, res) => {
+                assert.strictEqual(res.status, 400);
+                assert.strictEqual(res.body.error, 'Invalid parameter: "query" is required and must be a non-empty string.');
+                done();
+            });
+    });
 
     // Test case for successful search with matching book title
     it('should return 200 and matching books', function(done) {
