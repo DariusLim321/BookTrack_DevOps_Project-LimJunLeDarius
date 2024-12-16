@@ -18,40 +18,42 @@ describe('BookTrack Search API', () => {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
-            console.log('Connected to MongoDB');
         } catch (err) {
-            console.error('Error connecting to MongoDB:', err);
-            throw err;
+            throw new Error('Error connecting to MongoDB: ' + err.message);
         }
-
+    
         // Start the server
         const { address, port } = await server.address();
         baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
     });
-
+    
     after(async () => {
         // Close the server
-        await new Promise((resolve) => {
-            server.close(() => resolve());
+        await new Promise((resolve, reject) => {
+            server.close((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
-
-        // Drop and close MongoDB connection (No actual database will be dropped as stubbing is used)
+    
+        // Close MongoDB connection
         if (mongoose.connection.readyState) {
             await mongoose.connection.close();
         }
     });
-
+    
     beforeEach(() => {
         sandbox = sinon.createSandbox();  // Create a new sandbox for each test case
     });
-
+    
     afterEach(() => {
         if (sandbox) {
             sandbox.restore();  // Restore all stubs after each test case
         }
     });
-
-    // All test cases now are under a single test suite
 
     // Test case for query longer than 100 characters
     it('should return 400 if the query is too long', (done) => {
@@ -89,7 +91,7 @@ describe('BookTrack Search API', () => {
 
     // Test case for successful search with matching book title
     it('should return 200 and matching books', function(done) {
-        this.timeout(5000); // Increase timeout if needed
+        // this.timeout(5000); // Increase timeout if needed
 
         // Stubbing the MongoDB query to return mock data
         const bookCollection = require('../models/book.js');
