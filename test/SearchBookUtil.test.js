@@ -141,7 +141,7 @@ describe('BookTrack Search API', () => {
     // Test case for MongoDB query error
     it('should return 500 if there is a MongoDB query error', (done) => {
         const bookCollection = require('../models/book.js'); 
-        sandbox.stub(bookCollection, 'find').throws(new Error('MongoDB query failed'));  // Stub to throw error during find operation
+        sandbox.stub(bookCollection, 'find').rejects(new Error('MongoDB query failed')); // Stub to reject with an error during the find operation
 
         chai.request(baseUrl)
             .get('/search?query=test') 
