@@ -6,7 +6,7 @@ function closeForm() {
 
 // Function to check if a title already exists, ignoring the current book
 async function isTitleUnique(newTitle, bookId) {
-    const response = await fetch(`http://localhost:5500/books`);
+    const response = await fetch(`/books`);
     const books = await response.json();
 
     return books.every(book => book.title !== newTitle || book._id === bookId);
@@ -55,7 +55,7 @@ async function editBook(bookId) {
 
     try {
         // Fetch the book details from the server using the book ID
-        const response = await fetch(`http://localhost:5500/books/${bookId}`);
+        const response = await fetch(`/books/${bookId}`);
 
         if (response.ok) {
             const book = await response.json();
@@ -153,7 +153,7 @@ document.getElementById('editBookForm').addEventListener('submit', async functio
     }
 
     try {
-        const response = await fetch(`http://localhost:5500/updateBook/${bookId}`, {
+        const response = await fetch(`/updateBook/${bookId}`, {
             method: 'PUT',
             body: form,
         });
@@ -181,7 +181,7 @@ function getBookById(bookId) {
 
     const request = new XMLHttpRequest();
     // Open a GET request to fetch a specific book by its ID, using template literals in the URL
-    request.open('GET', `http://localhost:5500/books/${bookId}`, true);
+    request.open('GET', `/books/${bookId}`, true);
 
     // Define the onload event handler for the request
     request.onload = function () {

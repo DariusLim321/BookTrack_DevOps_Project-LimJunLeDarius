@@ -54,7 +54,7 @@ function addBookFeature() {
 
         try {
             // Send data to the server after confirmation
-            const response = await fetch('http://localhost:5500/addBook', {
+            const response = await fetch('/addBook', {
                 method: 'POST',
                 body: form,
             });
