@@ -6,7 +6,7 @@ function getBooks() {
     document.getElementById('loading').style.display = 'block';
 
     // Open a GET request to the server on the /books endpoint
-    request.open('GET', 'http://localhost:5500/books', true);
+    request.open('GET', '/books', true);
     
     // Define the onload event handler for the request
     request.onload = function () {

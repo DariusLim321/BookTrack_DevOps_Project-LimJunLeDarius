@@ -26,7 +26,7 @@ function searchBooks() {
     document.getElementById('loading').style.display = 'block'; // Show loading indicator
 
     // Open a GET request with the query as a URL parameter
-    request.open('GET', `http://localhost:5500/search?query=${encodeURIComponent(query)}`, true);
+    request.open('GET', `/search?query=${encodeURIComponent(query)}`, true);
 
     // Define the onload event handler for the request
     request.onload = function () {
@@ -46,6 +46,10 @@ function searchBooks() {
         else if (request.status === 404) {
             clearSearch()
             alert('No books found matching your search criteria.');
+        }
+        else {
+            console.error('Error fetching search results:', request.statusText);
+            alert('Failed to retrieve search results. Please try again later.');
         }
     };
     request.send();

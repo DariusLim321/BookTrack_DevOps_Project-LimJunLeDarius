@@ -54,6 +54,7 @@ describe('BookTrack Search API', () => {
             sandbox.restore();  // Restore all stubs after each test case
         }
     });
+    
 
     // Test case for query longer than 100 characters
     it('should return 400 if the query is too long', (done) => {
