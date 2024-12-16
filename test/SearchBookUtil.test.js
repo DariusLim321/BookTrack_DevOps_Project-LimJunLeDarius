@@ -56,8 +56,6 @@ describe('BookTrack Search API', () => {
     });
     
 
-    // All test cases now are under a single test suite
-
     // Test case for query longer than 100 characters
     it('should return 400 if the query is too long', (done) => {
         const longQuery = 'a'.repeat(101); // 101 characters long
