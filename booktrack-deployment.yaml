@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: booktrack-container
-          image: dariuslim744/booktrack-image:latest
+          image: dariuslim744/booktrack-image:latestv1
           ports:
             - containerPort: 5500 # Matches the container port in Docker Compose

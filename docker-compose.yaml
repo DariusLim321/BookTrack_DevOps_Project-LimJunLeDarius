@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dariuslim744/booktrack-image:latest
+    image: dariuslim744/booktrack-image:latestv1
     container_name: booktrack-container
     ports:
       - "5500:5500"  # Mapping host port 4000 to container port 5050
