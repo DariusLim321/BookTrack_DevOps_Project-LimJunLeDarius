@@ -10,7 +10,7 @@ cov_qu1fp69vh().s[8]++;if(specialCharacterRegex.test(query)){cov_qu1fp69vh().b[2
 }else{cov_qu1fp69vh().b[2][1]++;}// Create an XMLHttpRequest to fetch the search results from the backend
 const request=(cov_qu1fp69vh().s[11]++,new XMLHttpRequest());cov_qu1fp69vh().s[12]++;document.getElementById('loading').style.display='block';// Show loading indicator
 // Open a GET request with the query as a URL parameter
-cov_qu1fp69vh().s[13]++;request.open('GET',`http://localhost:5500/search?query=${encodeURIComponent(query)}`,true);// Define the onload event handler for the request
+cov_qu1fp69vh().s[13]++;request.open('GET',`/search?query=${encodeURIComponent(query)}`,true);// Define the onload event handler for the request
 cov_qu1fp69vh().s[14]++;request.onload=function(){cov_qu1fp69vh().f[1]++;cov_qu1fp69vh().s[15]++;document.getElementById('loading').style.display='none';// Hide loading indicator
 // Check if the request was successful (status code between 200 and 299)
 cov_qu1fp69vh().s[16]++;if((cov_qu1fp69vh().b[4][0]++,request.status>=200)&&(cov_qu1fp69vh().b[4][1]++,request.status<300)){cov_qu1fp69vh().b[3][0]++;// Parse the JSON response to get the filtered books array

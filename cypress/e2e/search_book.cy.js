@@ -24,7 +24,7 @@ describe('Search Book Frontend', () => {
     ];
   
     // Intercept the search request with the query parameter in the URL
-    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(searchTerm)}`, {
+    cy.intercept('GET', `/search*?query=${encodeURIComponent(searchTerm)}`, {
       statusCode: 200,
       body: mockResults,
     }).as('searchBooks');
@@ -48,7 +48,7 @@ describe('Search Book Frontend', () => {
     const invalidSearchTerm = 'InvalidBookName';
   
     // Intercept the search request and respond with a 404 status for no results
-    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
+    cy.intercept('GET', `/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
       statusCode: 404, // Simulating a 404 error when no books are found
       body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
     }).as('searchBooks');
@@ -105,7 +105,7 @@ describe('Search Book Frontend', () => {
     const searchTerm = 'the'; // Example search term
   
     // Mock the XMLHttpRequest failure by intercepting the request and returning a failure status
-    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(searchTerm)}`, {
+    cy.intercept('GET', `/search*?query=${encodeURIComponent(searchTerm)}`, {
       statusCode: 500, // Simulate server error (500 Internal Server Error)
       body: { message: 'Internal server error' }, // Optional: Provide error message in the response body
     }).as('searchBooksError');
@@ -145,7 +145,7 @@ describe('Search Book Frontend', () => {
     const invalidSearchTerm = 'InvalidBookName'; // A search term that will return no results
   
     // Intercept the search request and respond with a 404 status for no results
-    cy.intercept('GET', `http://localhost:5500/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
+    cy.intercept('GET', `/search*?query=${encodeURIComponent(invalidSearchTerm)}`, {
       statusCode: 404, // Simulate 404 error when no results are found
       body: { message: 'No books found matching your search criteria.' }, // Optional: Include a message in the body
     }).as('searchBooks');

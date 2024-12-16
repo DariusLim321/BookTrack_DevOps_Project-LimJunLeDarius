@@ -2,7 +2,7 @@ function cov_pa313dd9a(){var path="C:\\Users\\linju\\Desktop\\TP Y2S2\\DVOPS\\As
 cov_pa313dd9a=function(){return actualCoverage;};}return actualCoverage;}cov_pa313dd9a();// Function to fetch books from the server
 function getBooks(){cov_pa313dd9a().f[0]++;const request=(cov_pa313dd9a().s[0]++,new XMLHttpRequest());// Show loading indicator
 cov_pa313dd9a().s[1]++;document.getElementById('loading').style.display='block';// Open a GET request to the server on the /books endpoint
-cov_pa313dd9a().s[2]++;request.open('GET','http://localhost:5500/books',true);// Define the onload event handler for the request
+cov_pa313dd9a().s[2]++;request.open('GET','/books',true);// Define the onload event handler for the request
 cov_pa313dd9a().s[3]++;request.onload=function(){cov_pa313dd9a().f[1]++;cov_pa313dd9a().s[4]++;// Hide loading indicator
 document.getElementById('loading').style.display='none';// Check if the status code is successful (between 200 and 299)
 cov_pa313dd9a().s[5]++;if((cov_pa313dd9a().b[1][0]++,request.status>=200)&&(cov_pa313dd9a().b[1][1]++,request.status<300)){cov_pa313dd9a().b[0][0]++;cov_pa313dd9a().s[6]++;try{// Parse the JSON response and store it in the books variable
