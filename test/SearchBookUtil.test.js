@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 let baseUrl;
 let sandbox;
 
-describe('bookTrack Search utility', () => {
+describe('bookTrack Search API', () => {
     before(async () => {
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
