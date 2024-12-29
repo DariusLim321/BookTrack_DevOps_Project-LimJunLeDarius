@@ -42,7 +42,7 @@ describe('bookTrack Search API', () => {
 
     afterEach(() => {
         if (sandbox) {
-            sandbox.restore();  // Restore sandbox after each test
+            sandbox.restore();  // Restore sandbox after each test.
         }
     });
 
