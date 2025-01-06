@@ -28,10 +28,8 @@ describe('bookTrack Search API', () => {
 
     after(async () => {
         await new Promise((resolve) => {
-            server.close(err => {
-                if (err) reject(err);
-                resolve();
-            });
+            server.close(() => resolve());
+        });
 
         if (mongoose.connection.readyState) {
             await mongoose.connection.close();
