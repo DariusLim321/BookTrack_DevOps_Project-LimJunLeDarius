@@ -152,22 +152,16 @@ describe('bookTrack Search API', () => {
             });
     });
 
-    it('should return 500 if an unexpected error occurs during a MongoDB operation', function (done) {
-        this.timeout(5000); // Increase the timeout if necessary
-
-        // Stub the MongoDB collection's find method to throw an error
+    it('should return 500 if an unexpected error occurs during a MongoDB operation', (done) => {
+        const mockCollection = require('../models/book.js');
         sandbox.stub(mockCollection, 'find').throws(new Error('Unexpected server error'));
 
-        chai.request(app)
+        chai.request(baseUrl)
             .get('/search?query=The')
             .end((err, res) => {
-                try {
-                    assert.strictEqual(res.status, 500, 'Status should be 500');
-                    assert.strictEqual(res.body.error, 'Internal Server Error', 'Error message should match');
-                    done();
-                } catch (error) {
-                    done(error);
-                }
+                assert.strictEqual(res.status, 500, 'Status should be 500');
+                assert.strictEqual(res.body.error, 'Internal Server Error', 'Error message should match');
+                done();
             });
     });
 });
