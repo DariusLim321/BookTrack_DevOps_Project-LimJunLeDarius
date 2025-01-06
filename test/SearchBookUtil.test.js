@@ -9,8 +9,9 @@ const mongoose = require('mongoose');
 let baseUrl;
 let sandbox;
 
-describe('bookTrack Search API', () => {
-    before(async () => {
+describe('bookTrack Search API', function () {
+    before(async function () {
+        this.timeout(10000); // Increase timeout if necessary
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
@@ -26,13 +27,23 @@ describe('bookTrack Search API', () => {
         baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
     });
 
-    after(async () => {
-        await new Promise((resolve) => {
-            server.close(() => resolve());
-        });
+    after(async function () {
+        this.timeout(10000); // Increase timeout if necessary
 
-        if (mongoose.connection.readyState) {
-            await mongoose.connection.close();
+        try {
+            await new Promise((resolve, reject) => {
+                server.close(err => {
+                    if (err) reject(err);
+                    resolve();
+                });
+            });
+
+            if (mongoose.connection.readyState) {
+                await mongoose.connection.close();
+            }
+        } catch (err) {
+            console.error('Error during cleanup:', err);
+            throw err;
         }
     });
 
@@ -89,7 +100,7 @@ describe('bookTrack Search API', () => {
             });
     });
 
-    it('should return 200 and matching books', function(done) {
+    it('should return 200 and matching books', function (done) {
         this.timeout(5000); // Increase timeout if needed
 
         // Stubbing the MongoDB query to return mock data
