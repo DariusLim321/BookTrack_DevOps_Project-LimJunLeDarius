@@ -176,4 +176,3 @@ describe('bookTrack Search API', function () {
             });
     });
 });
-has context menu
