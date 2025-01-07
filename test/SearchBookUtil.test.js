@@ -11,25 +11,22 @@ let sandbox;
 
 describe('bookTrack Search API', function () {
     before(async function () {
-        this.timeout(10000); // Increase timeout if necessary
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
             console.log('Connected to MongoDB');
+
+            const { address, port } = server.address();
+            baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
         } catch (err) {
             console.error('Error connecting to MongoDB:', err);
             throw err;
         }
-
-        const { address, port } = await server.address();
-        baseUrl = `http://${address === '::' ? 'localhost' : address}:${port}`;
     });
 
     after(async function () {
-        this.timeout(10000); // Increase timeout if necessary
-
         try {
             await new Promise((resolve, reject) => {
                 server.close(err => {
@@ -101,8 +98,6 @@ describe('bookTrack Search API', function () {
     });
 
     it('should return 200 and matching books', function (done) {
-        this.timeout(5000); // Increase timeout if needed
-
         // Stubbing the MongoDB query to return mock data
         const bookCollection = require('../models/book.js');
         const mockBooks = [{ title: 'The Great Gatsby' }, { title: 'The Theory of Everything' }];
