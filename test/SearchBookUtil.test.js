@@ -11,7 +11,7 @@ let sandbox;
  
 describe('bookTrack Search API', function () {
     before(async function () {
-        this.timeout(10000); // Increase timeout if necessary
+        this.timeout(10000); 
         try {
             await mongoose.connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
@@ -28,7 +28,7 @@ describe('bookTrack Search API', function () {
     });
  
     after(async function () {
-        this.timeout(10000); // Increase timeout if necessary
+        this.timeout(10000); 
  
         try {
             await new Promise((resolve, reject) => {
