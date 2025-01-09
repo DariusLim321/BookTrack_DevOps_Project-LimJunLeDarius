@@ -56,6 +56,21 @@ describe('bookTrack Search API', function () {
             sandbox.restore();  // Restore sandbox after each test.
         }
     });
+
+ it('should return 400 if the query is too long', (done) => {
+        const longQuery = 'a'.repeat(101);
+        chai.request(baseUrl)
+            .get(`/search?query=${longQuery}`)
+            .end((err, res) => {
+                assert.strictEqual(res.status, 400, 'Status should be 400');
+                assert.strictEqual(
+                    res.body.error,
+                    'Query is too long. Max length is 100 characters.',
+                    'Error message should match'
+                );
+                done();
+            });
+    });
  
     it('should return 400 if the query parameter is missing', (done) => {
         chai.request(baseUrl)
@@ -85,20 +100,7 @@ describe('bookTrack Search API', function () {
             });
     });
  
-    it('should return 400 if the query is too long', (done) => {
-        const longQuery = 'a'.repeat(101);
-        chai.request(baseUrl)
-            .get(`/search?query=${longQuery}`)
-            .end((err, res) => {
-                assert.strictEqual(res.status, 400, 'Status should be 400');
-                assert.strictEqual(
-                    res.body.error,
-                    'Query is too long. Max length is 100 characters.',
-                    'Error message should match'
-                );
-                done();
-            });
-    });
+    
  
     it('should return 200 and matching books', function (done) {
         this.timeout(5000); // Increase timeout if needed
