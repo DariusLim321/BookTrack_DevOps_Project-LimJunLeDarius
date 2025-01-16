@@ -34,46 +34,46 @@ jobs:
       - name: Run frontend test cases
         run: npx nyc --nycrc-path .nycrc-frontend cypress run
  
-  build-and-deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code from GitHub Repo
-        uses: actions/checkout@v3
+  # build-and-deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code from GitHub Repo
+  #       uses: actions/checkout@v3
  
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
  
-      - name: Build and Push Docker images
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          dockerfile: DockerFile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/booktrack-image:latest
+  #     - name: Build and Push Docker images
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         dockerfile: DockerFile
+  #         push: true
+  #         tags: ${{ secrets.DOCKER_USERNAME }}/booktrack-image:latest
  
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - name: Azure Login
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
  
-      - name: Set up AKS cluster
-        run: |
-          az aks show --resource-group BookTrackResourceGroup --name BookTrackAKSCluster -o json >nul 2>nul || az aks create --resource-group BookTrackResourceGroup --name BookTrackAKSCluster --node-count 1 --generate-ssh-keys 2>&1
+  #     - name: Set up AKS cluster
+  #       run: |
+  #         az aks show --resource-group BookTrackResourceGroup --name BookTrackAKSCluster -o json >nul 2>nul || az aks create --resource-group BookTrackResourceGroup --name BookTrackAKSCluster --node-count 1 --generate-ssh-keys 2>&1
  
-      - name: Get AKS credentials
-        run: az aks get-credentials --resource-group BookTrackResourceGroup --name BookTrackAKSCluster --overwrite-existing
+  #     - name: Get AKS credentials
+  #       run: az aks get-credentials --resource-group BookTrackResourceGroup --name BookTrackAKSCluster --overwrite-existing
  
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f booktrack-deployment.yaml
-          kubectl apply -f booktrack-service.yaml
+  #     - name: Deploy to Kubernetes
+  #       run: |
+  #         kubectl apply -f booktrack-deployment.yaml
+  #         kubectl apply -f booktrack-service.yaml
  
-      - name: Verify Deployment
-        run: |
-          kubectl rollout history deployment/booktrack-deployment
-          kubectl get pods
-          kubectl get services
+  #     - name: Verify Deployment
+  #       run: |
+  #         kubectl rollout history deployment/booktrack-deployment
+  #         kubectl get pods
+  #         kubectl get services
