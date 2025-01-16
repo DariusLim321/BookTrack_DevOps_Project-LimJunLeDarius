@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: booktrack-container
-          image: dariuslim744/booktrack-image:latestv2
+          image: dariuslim744/booktrack-image:latestv3
           ports:
             - containerPort: 5500 
