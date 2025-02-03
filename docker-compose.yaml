@@ -3,7 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dariuslim744/booktrack-image:latestv5
+    image: dariuslim744/booktrack-image:latestv6
+
     container_name: booktrack-container
     ports:
       - "5500:5500"  
