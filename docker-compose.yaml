@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dariuslim744/booktrack-image:latestv8
+    image: dariuslim744/booktrack-image:latestv9
 
     container_name: booktrack-container
     ports:
